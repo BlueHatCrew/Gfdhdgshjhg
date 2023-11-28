@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas Wishlist</title>
+  <style>
+    body {
+      background-color: #f7f3e9;
+      font-family: "Arial", sans-serif;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-top: 100px;
+      animation: text-color-fade 7s infinite;
+    }
+
+    @keyframes text-color-fade {
+      0% {
+        color: #ff5555;
+      }
+      25% {
+        color: #00aaff; /* Greenish-blue */
+      }
+      50% {
+        color: #00ff00; /* Green */
+      }
+      75% {
+        color: #00aaff; /* Greenish-blue */
+      }
+      100% {
+        color: #ff5555;
+      }
+    }
+
+    #wishlist {
+      margin: 50px auto;
+      max-width: 400px;
+      text-align: left;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #wishlist input[type="text"] {
+      margin-bottom: 10px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #wishlist ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #wishlist li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    #wishlist li button {
+      margin-left: 10px;
+      background-color: #ff5555;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #print-button {
+      margin-bottom: 50px;
+      background-color: #ff5555;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #footer {
+      background-color: #ff5555;
+      color: #fff;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      color: #fff;
+      pointer-events: none;
+      animation: snowflake-fall linear infinite;
+    }
+
+    @keyframes snowflake-fall {
+      0% {
+        transform: translateY(-100%);
+      }
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+  </style>
+  <script>
+    window.onload = function() {
+      // Function to get the number of days until Christmas
+      function getDaysUntilChristmas() {
+        var today = new Date();
+        var christmas = new Date(today.getFullYear(), 11, 25);
+        if (today.getMonth() == 11 && today.getDate() > 25) {
+          christmas.setFullYear(christmas.getFullYear() + 1);
+        }
+        var oneDay = 1000 * 60 * 60 * 24;
+        return Math.ceil((christmas.getTime() - today.getTime()) / oneDay);
+      }
+
+      // Update the number of days until Christmas
+      document.getElementById("days-until-christmas").textContent = getDaysUntilChristmas();
+
+      // Get the wishlist from cookies and populate the list
+      function getWishlist() {
+        var wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        var wishlistContainer = document.getElementById("wishlist-items");
+        wishlistContainer.innerHTML = "";
+        wishlist.forEach(function(item, index) {
+          var li = document.createElement("li");
+          li.innerHTML = `
+            <span>${item}</span>
+            <button onclick="deleteItem(${index})">Delete</button>
+          `;
+          wishlistContainer.appendChild(li);
+        });
+      }
+
+      // Add an item to the wishlist
+      document.getElementById("wishlist-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var itemInput = document.getElementById("wishlist-item");
+        var item = itemInput.value.trim();
+        if (item !== "") {
+          var wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+          wishlist.push(item);
+          localStorage.setItem("wishlist", JSON.stringify(wishlist));
+          itemInput.value = "";
+          getWishlist();
+        }
+      });
+
+      // Delete an item from the wishlist
+      window.deleteItem = function(index) {
+        var wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        wishlist.splice(index, 1);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        getWishlist();
+      };
+
+      // Print the wishlist
+      document.getElementById("print-button").addEventListener("click", function() {
+        window.print();
+      });
+
+      // Initialize the wishlist
+      getWishlist();
+    };
+  </script>
+</head>
+<body>
+  <h1>Days Until Christmas: <span id="days-until-christmas"></span></h1>
+
+  <div id="wishlist">
+    <h2>Christmas Wishlist</h2>
+    <form id="wishlist-form">
+      <input type="text" id="wishlist-item" placeholder="Add an item">
+      <button type="submit">Add</button>
+    </form>
+    <ul id="wishlist-items"></ul>
+    <button id="print-button">Print Wishlist</button>
+  </div>
+
+  <div id="footer">
+    BlueHatCrew Tech
+  </div>
+
+  <script>
+    // Snowflake animation script
+    function createSnowflake() {
+      var snowflake = document.createElement("div");
+      snowflake.innerHTML = "❄";
+      snowflake.classList.add("snowflake");
+      snowflake.style.left = Math.random() * 100 + "%";
+      snowflake.style.animationDuration = Math.random() * 3 + 2 + "s";
+      document.body.appendChild(snowflake);
+      setTimeout(function() {
+        snowflake.remove();
+      }, 5000);
+    }
+
+    setInterval(createSnowflake, 500);
+  </script>
+</body>
+</html>
