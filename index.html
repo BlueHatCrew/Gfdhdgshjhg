@@ -7,53 +7,59 @@
   <title>Christmas Wishlist</title>
   <style>
     body {
-      background-color: #f7f3e9;
-      font-family: "Arial", sans-serif;
+      background: linear-gradient(180deg, #ffdbb8 0%, #81c784 100%);
+      color: #4e4e4e;
+      font-family: 'Cursive', 'Lucida Handwriting', cursive;
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      margin: 0;
+font-weight: bold;
     }
 
     h1 {
-      font-size: 48px;
-      margin-top: 100px;
+      font-size: 2.5em;
+      margin-top: 50px;
       animation: text-color-fade 7s infinite;
     }
 
     @keyframes text-color-fade {
-      0% {
-        color: #ff5555;
+      0%, 100% {
+        color: #d35d50;
       }
-      25% {
-        color: #00aaff; /* Greenish-blue */
+      25%, 75% {
+        color: #4c8c4a;
       }
       50% {
-        color: #00ff00; /* Green */
+        color: #94424f;
       }
-      75% {
-        color: #00aaff; /* Greenish-blue */
-      }
-      100% {
-        color: #ff5555;
-      }
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
 
     #wishlist {
       margin: 50px auto;
-      max-width: 400px;
-      text-align: left;
-      background-color: #fff;
+      max-width: 80%;
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      margin-top: 20px;
+      overflow: auto;
     }
 
     #wishlist input[type="text"] {
+      width: calc(100% - 16px);
+      padding: 10px;
+      border: 2px solid #94424f;
+      border-radius: 5px;
+      color: #4e4e4e;
+      background-color: #f7f7f7;
       margin-bottom: 10px;
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      font-size: 12px;
     }
 
     #wishlist ul {
@@ -63,38 +69,52 @@
 
     #wishlist li {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    #wishlist li span {
+      flex-grow: 1;
+      margin-right: 10px;
     }
 
     #wishlist li button {
-      margin-left: 10px;
-      background-color: #ff5555;
+      background-color: #d35d50;
       color: #fff;
       border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
+      padding: 8px 16px;
+      border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    #print-button {
-      margin-bottom: 50px;
-      background-color: #ff5555;
+    #wishlist li button:hover {
+      background-color: #94424f;
+    }
+
+    #print-button, #wishlist-form button {
+      background-color: #81c784;
       color: #fff;
       border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
+      padding: 12px 20px;
+      border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    #print-button:hover, #wishlist-form button:hover {
+      background-color: #4c8c4a;
     }
 
     #footer {
-      background-color: #ff5555;
+      background-color: #d35d50;
       color: #fff;
       padding: 10px;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      width: 95%;
+      margin-top: 20px;
     }
 
     .snowflake {
@@ -130,11 +150,7 @@
         var oneDay = 1000 * 60 * 60 * 24;
         return Math.ceil((christmas.getTime() - today.getTime()) / oneDay);
       }
-
-      // Update the number of days until Christmas
       document.getElementById("days-until-christmas").textContent = getDaysUntilChristmas();
-
-      // Get the wishlist from cookies and populate the list
       function getWishlist() {
         var wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
         var wishlistContainer = document.getElementById("wishlist-items");
@@ -195,11 +211,11 @@
   </div>
 
   <div id="footer">
-    BlueHatCrew Tech
+  <b>  BlueHatCrew Tech<b>
   </div>
 
   <script>
-    // Snowflake animation script
+    // Snowflake stuff
     function createSnowflake() {
       var snowflake = document.createElement("div");
       snowflake.innerHTML = "❄";
